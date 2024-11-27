@@ -26,10 +26,10 @@
     - name: Configuring .env by writing to it
       ansible.builtin.copy:
         content: |
-          DATA_DIR={{ data_dir }}
-          NEXTCLOUD_DIR={{ nextcloud_dir }}/nextcloud
-          MARIADB_ROOT_PASS={{ mariadb_root_pass }}
-          MARIADB_PASS={{ mariadb_pass }}
+          DATA_DIR="{{ data_dir }}"
+          NEXTCLOUD_DIR="{{ nextcloud_root }}"
+          MARIADB_ROOT_PASS="{{ mariadb_root_pass }}"
+          MARIADB_PASS="{{ mariadb_pass }}"
         dest: "~{{ docker_compose_dir }}/.env"
     - name: Running docker-compose build php-fpm-nextcloud
       ansible.builtin.command:
