@@ -8,20 +8,21 @@
     # Make sure they are the same in prepare.yml
     mariadb_pass: password123
     mariadb_root_pass: password123
-    data_dir: ~/nextcloud/data
-    nextcloud_root: ~/nextcloud
-    docker_compose_dir: ~/docker/nextcloud
+    data_dir: /srv/nextcloud/data
+    nextcloud_root: /srv/nextcloud
+    docker_dir: /srv/nextcloud-docker
+    docker_compose_dir: /srv/nextcloud-docker/nextcloud
 
   tasks:
-    - name: Ensure ~/docker/ exists
+    - name: "Ensure {{ docker_dir }} exists"
       ansible.builtin.file:
-        path: ~/docker/
+        path: "{{ docker_dir }}"
         state: directory
         mode: '0755'
     - name: Git clone Nextcloud Docker
       ansible.builtin.git:
         repo: https://github.com/flor0/nextcloud-docker.git
-        dest: ~/docker/nextcloud
+        dest: "{{ docker_compose_dir }}"
     - name: Configuring .env by writing to it
       ansible.builtin.copy:
         content: |
@@ -32,8 +33,8 @@
         dest: "~{{ docker_compose_dir }}/.env"
     - name: Running docker-compose build php-fpm-nextcloud
       ansible.builtin.command:
-        cmd: docker compose -f ~/docker/nextcloud/docker-compose.yml build php-fpm-nextcloud
+        cmd: "docker compose -f {{ docker_compose_dir }}/docker-compose.yml build php-fpm-nextcloud"
     - name: Running docker-compose up -d
       ansible.builtin.command:
-        cmd: docker compose -f ~/docker/nextcloud/docker-compose.yml up -d
+        cmd: "docker compose -f {{ docker_compose_dir }}/docker-compose.yml up -d"
 
