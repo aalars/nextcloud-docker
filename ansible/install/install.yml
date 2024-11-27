@@ -6,8 +6,8 @@
   vars:
     # Change these variables to your setup
     # Make sure they are the same in prepare.yml
-    mariadb_pass: password123
-    mariadb_root_pass: password123
+    mariadb_pass: "{{ mariadb_pass }}"
+    mariadb_root_pass: "{{ mariadb_root_pass }}"
     data_dir: /srv/nextcloud/data
     nextcloud_root: /srv/nextcloud
     docker_dir: /srv/nextcloud-docker
